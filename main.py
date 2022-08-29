@@ -7,7 +7,7 @@ response = requests.get('https://api.hypixel.net/'+player, headers=headers)
 
 #wins = response['player']['stats']['wins']
 
-wins = 2
+wins = 3
 
 f = open("/Users/ripkoye/Desktop/WinstreakProject/winstreak.txt", "w")
 f.write("Winstreak: "+str(wins))
