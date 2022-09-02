@@ -19,14 +19,30 @@ f = open('/Users/ripkoye/Desktop/WinstreakProject/winstreak.txt', 'r')
 winstreak = StringVar(mainframe)
 winstreak.set(f.read())
 #creates a winstreaklabel
-winstreaklabel = ttk.Label(mainframe,width=100)
+winstreaklabel = ttk.Label(mainframe,width=20, padding='5 5 5 5')
 winstreaklabel.grid()
 winstreaklabel['textvariable'] = winstreak
 #assigns the text to the variable named winstreak
 f.close()
 
-button = ttk.Button(mainframe)
+is_on = True
+
+on = PhotoImage(file='on.png')
+off = PhotoImage(file='off.png')
+buttonOnOff = ttk.Button(mainframe, image=on, width=0.5, padding='5 5 5 5')
+
+def switch():
+    global is_on
+
+    if is_on:
+        buttonOnOff.config(image = off)
+        is_on = False
+    else:
+        buttonOnOff.config(image = on)
+        is_on = True
+
+buttonOnOff.config(command=switch())
+buttonOnOff.grid()
+
 
 root.mainloop()
-
-
