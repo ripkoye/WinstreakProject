@@ -14,7 +14,7 @@ mainframe.grid(column=10, row=10, sticky=(N, W, E, S))
 root.columnconfigure(10, weight=1)
 root.rowconfigure(10, weight=1)
 
-f = open('/Users/ripkoye/Desktop/WinstreakProject/winstreak.txt', 'r')
+f = open('winstreak.txt', 'r')
 #store the information into a variable
 winstreak = StringVar(mainframe)
 winstreak.set(f.read())
@@ -33,6 +33,7 @@ buttonOnOff = ttk.Button(mainframe, image=on, width=0.5, padding='5 5 5 5')
 
 def switch():
     global is_on
+    print("FUNCTION CALL")
 
     if is_on:
         buttonOnOff.config(image = off)
@@ -41,7 +42,7 @@ def switch():
         buttonOnOff.config(image = on)
         is_on = True
 
-buttonOnOff.config(command=switch())
+buttonOnOff.config(command=switch)
 buttonOnOff.grid()
 
 

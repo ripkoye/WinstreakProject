@@ -30,7 +30,7 @@ def read():
 
 #function to write the information into the txt file for streamlabs to run
 def write():
-    f = open("/Users/ripkoye/Desktop/WinstreakProject/winstreak.txt", "w")
+    f = open("winstreak.txt", "w")
     f.write("Winstreak: "+str(wins))
     f.close()
 
