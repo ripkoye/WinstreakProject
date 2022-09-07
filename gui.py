@@ -1,7 +1,8 @@
 #import all of tkinter and also updated widgets
 from tkinter import *
-from tkinter import ttk
-import main
+from tkinter import ttk, messagebox
+from PIL import Image, ImageTk
+import call
 
 #sets up main application window
 root = Tk()
@@ -13,37 +14,50 @@ mainframe = ttk.Frame(root, padding="3 3 12 12")
 mainframe.grid(column=10, row=10, sticky=(N, W, E, S))
 root.columnconfigure(10, weight=1)
 root.rowconfigure(10, weight=1)
+root.geometry('600x400')
 
 f = open('winstreak.txt', 'r')
 #store the information into a variable
 winstreak = StringVar(mainframe)
 winstreak.set(f.read())
 #creates a winstreaklabel
-winstreaklabel = ttk.Label(mainframe,width=20, padding='5 5 5 5')
+winstreaklabel = Label(mainframe,width=10)
 winstreaklabel.grid()
 winstreaklabel['textvariable'] = winstreak
 #assigns the text to the variable named winstreak
 f.close()
 
-is_on = True
+imageWidth = 100
+imageHeight = 50
 
-on = PhotoImage(file='on.png')
-off = PhotoImage(file='off.png')
-buttonOnOff = ttk.Button(mainframe, image=on, width=0.5, padding='5 5 5 5')
+is_on = False
+onImage = Image.open('on.png')
+onResized = onImage.resize((imageWidth,imageHeight))
+on = ImageTk.PhotoImage(onResized)
+offImage = Image.open('off.png')
+offResized = offImage.resize((imageWidth,imageHeight))
+off = ImageTk.PhotoImage(offResized)
+buttonOnOff = Button(mainframe, image=on)
+
 
 def switch():
     global is_on
-    print("FUNCTION CALL")
-
-    if is_on:
-        buttonOnOff.config(image = off)
-        is_on = False
-    else:
-        buttonOnOff.config(image = on)
-        is_on = True
-
-buttonOnOff.config(command=switch)
-buttonOnOff.grid()
+    
+    while True:
+        if is_on:
+            buttonOnOff.config(image = off)
+            is_on = False
+        else:
+            buttonOnOff.config(image = on)
+            is_on = True
 
 
+buttonOnOff.config(image=off, command=switch, bd=0, width=imageWidth, height=imageHeight)
+buttonOnOff.grid(row=1, column=0)
+
+def on_closing():
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        root.destroy()
+
+root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()
