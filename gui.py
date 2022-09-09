@@ -1,7 +1,9 @@
 #import all of tkinter and also updated widgets
 from tkinter import *
-from tkinter import ttk, messagebox
+from tkinter import ttk
 from PIL import Image, ImageTk
+import time
+import threading
 import call
 
 #sets up main application window
@@ -27,8 +29,8 @@ winstreaklabel['textvariable'] = winstreak
 #assigns the text to the variable named winstreak
 f.close()
 
-imageWidth = 100
-imageHeight = 50
+imageWidth = 200
+imageHeight = 100
 
 is_on = False
 onImage = Image.open('on.png')
@@ -37,27 +39,31 @@ on = ImageTk.PhotoImage(onResized)
 offImage = Image.open('off.png')
 offResized = offImage.resize((imageWidth,imageHeight))
 off = ImageTk.PhotoImage(offResized)
+
 buttonOnOff = Button(mainframe, image=on)
 
+def keepRequesting():
+    while is_on:
+        print("Threading...")
+        call.read()
+        call.write()
+        time.sleep(10)
 
 def switch():
     global is_on
     
-    while True:
-        if is_on:
-            buttonOnOff.config(image = off)
-            is_on = False
-        else:
-            buttonOnOff.config(image = on)
-            is_on = True
+    if is_on:
+        buttonOnOff.config(image = off)
+        is_on = False
+
+    else:
+        buttonOnOff.config(image = on)
+        is_on = True
+        threading.Thread(target=keepRequesting, daemon=True).start()
 
 
 buttonOnOff.config(image=off, command=switch, bd=0, width=imageWidth, height=imageHeight)
 buttonOnOff.grid(row=1, column=0)
 
-def on_closing():
-    if messagebox.askokcancel("Quit", "Do you want to quit?"):
-        root.destroy()
-
-root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()
+

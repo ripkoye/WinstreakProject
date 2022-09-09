@@ -27,6 +27,7 @@ def read():
     #pull the information out from json
     success = data['success']
     wins = data['player']['stats']['Bedwars']['winstreak']
+    print(datarate)
 
 #function to write the information into the txt file for streamlabs to run
 def write():
