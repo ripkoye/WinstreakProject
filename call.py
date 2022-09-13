@@ -1,33 +1,42 @@
 import requests
 import json
+import sys, os
 
-uuid = '9621788a942d48bbbfb6f05484e4dca2'
-headers = {
-    'API-Key': '5434a1b3-6c62-4db5-8449-b6ab2109cb89',
-}
+apiKey = ''
+wins = ''
 
-#setting up the variables and calling it once
-response = requests.get('https://api.hypixel.net/player?uuid='+uuid,headers=headers)
-responserate = requests.get('https://api.hypixel.net/key', headers=headers)
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    
+    return os.path.join(base_path, relative_path)
 
-data = response.json()
-datarate = responserate.json()
-success = data['success']
-wins = data['player']['stats']['Bedwars']['winstreak']
 
 def read():
+    global wins
+
+    settingsFile = open(resource_path("settings.json"), 'r')
+    dataPersonal = json.load(settingsFile)
+    apiKey = dataPersonal['playerInfo']['API-Key']
+    uuid = dataPersonal['playerInfo']['uuid']
+    settingsFile.close()
+
+    headers = {
+    'API-Key': apiKey
+    }
+
     #requests to the api (winstreak data and rate information)
     response = requests.get('https://api.hypixel.net/player?uuid='+uuid,headers=headers)
-    responserate = requests.get('https://api.hypixel.net/key', headers=headers)
+    #responserate = requests.get('https://api.hypixel.net/key', headers=headers)
 
     #making it readable
     data = response.json()
-    datarate = responserate.json()
 
     #pull the information out from json
-    success = data['success']
     wins = data['player']['stats']['Bedwars']['winstreak']
-    print(datarate)
+    print("success")
 
 #function to write the information into the txt file for streamlabs to run
 def write():
@@ -38,7 +47,5 @@ def write():
 
 #calling and showing response
 write()
-print(success)
-print(response)
-print(datarate)
+
 
