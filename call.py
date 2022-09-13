@@ -40,12 +40,10 @@ def read():
 
 #function to write the information into the txt file for streamlabs to run
 def write():
-    f = open("winstreak.txt", "w")
+    f = open(resource_path("winstreak.txt"), "w")
     f.write("Winstreak: "+str(wins))
     f.close()
 
 
-#calling and showing response
-write()
 
 

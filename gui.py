@@ -35,7 +35,7 @@ root.columnconfigure(10, weight=1)
 root.rowconfigure(10, weight=1)
 root.geometry('600x400')
 
-f = open('winstreak.txt', 'r')
+f = open(resource_path('winstreak.txt'), 'r')
 #store the information into a variable
 winstreak = StringVar(mainframe)
 winstreak.set(f.read())
@@ -60,9 +60,12 @@ off = ImageTk.PhotoImage(offResized)
 buttonOnOff = Button(mainframe, image=on)
 
 def keepRequesting():
+    global winstreak
     while is_on:
         call.read()
         call.write()
+        with open(resource_path("winstreak.txt"), 'r') as outfile:
+            winstreak.set(outfile.read())
         time.sleep(10)
 
 def switch():
